@@ -3,7 +3,7 @@ set -e
 
 echo "🔧 正在配置 DNS..."
 
-# 清除原有 resolv.conf
+# 移除符号链接
 if [ -L /etc/resolv.conf ]; then
     rm -f /etc/resolv.conf
     touch /etc/resolv.conf
@@ -18,12 +18,12 @@ EOF
 # 锁定文件
 chattr +i /etc/resolv.conf
 
-# 防止 systemd-resolved 干扰
+# 禁用 systemd-resolved（如存在）
 if systemctl is-enabled systemd-resolved &>/dev/null; then
     systemctl disable --now systemd-resolved
 fi
 
-# 添加到 rc.local 持久化
+# 配置 rc.local（防重启恢复）
 if [ ! -f /etc/rc.local ]; then
     echo -e "#!/bin/bash\nexit 0" > /etc/rc.local
     chmod +x /etc/rc.local
