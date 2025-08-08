@@ -6,14 +6,10 @@
 
 ### 超级一键安装（自动处理所有依赖）
 ```
-curl -sSL https://raw.githubusercontent.com/vps8899/bwhDNS/main/install.sh | bash
+bash <(curl -fsSL https://raw.githubusercontent.com/vps8899/bwhDNS/main/install.sh || wget -qO- https://raw.githubusercontent.com/vps8899/bwhDNS/main/install.sh)
+
 ```
 
-备用安装方式
-如果上述命令失败，可以尝试：
-```
-bash <(curl -sSL https://raw.githubusercontent.com/vps8899/bwhDNS/main/install.sh)
-```
 ✨ 特点
 
 🔧 自动检测系统类型并安装依赖（sudo、curl）
