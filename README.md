@@ -5,11 +5,14 @@
 ## 🚀 一键安装
 
 ### 超级一键安装（自动处理所有依赖）
-```curl -sSL https://raw.githubusercontent.com/vps8899/bwhDNS/main/install.sh | bash```
+```
+curl -sSL https://raw.githubusercontent.com/vps8899/bwhDNS/main/install.sh | bash
+```
 
 备用安装方式
 如果上述命令失败，可以尝试：
-```bash <(curl -sSL https://raw.githubusercontent.com/vps8899/bwhDNS/main/install.sh)
+```
+bash <(curl -sSL https://raw.githubusercontent.com/vps8899/bwhDNS/main/install.sh)
 ```
 ✨ 特点
 
