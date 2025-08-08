@@ -1,38 +1,48 @@
 #!/bin/bash
-
 set -e
 
-echo "📦 正在检测并安装依赖：curl 和 sudo"
+# 🚀 自动安装 curl（如未安装），并重新执行脚本
+if ! command -v curl &>/dev/null; then
+    echo "🔍 未检测到 curl，正在安装 curl..."
 
-install_if_missing() {
-    local cmd=$1
-    local pkg=$2
-
-    if ! command -v "$cmd" &>/dev/null; then
-        echo "🔧 未检测到 $cmd，正在尝试安装 $pkg..."
-        if command -v apt &>/dev/null; then
-            apt update && apt install -y "$pkg"
-        elif command -v dnf &>/dev/null; then
-            dnf install -y "$pkg"
-        elif command -v yum &>/dev/null; then
-            yum install -y "$pkg"
-        elif command -v pacman &>/dev/null; then
-            pacman -Sy --noconfirm "$pkg"
-        else
-            echo "❌ 未支持的系统，请手动安装 $pkg 后重试。"
-            exit 1
-        fi
+    if command -v apt &>/dev/null; then
+        apt update && apt install -y curl
+    elif command -v yum &>/dev/null; then
+        yum install -y curl
+    elif command -v dnf &>/dev/null; then
+        dnf install -y curl
+    elif command -v pacman &>/dev/null; then
+        pacman -Sy --noconfirm curl
+    else
+        echo "❌ 未识别的 Linux 包管理器，请手动安装 curl 后重试。"
+        exit 1
     fi
-}
 
-install_if_missing curl curl
-install_if_missing sudo sudo
+    echo "✅ curl 安装完成，重新执行脚本..."
+    exec curl -sSL https://raw.githubusercontent.com/vps8899/bwhDNS/main/install.sh | bash
+fi
 
-echo "📥 正在下载 bwhDNS.sh..."
+# ✅ 检查 sudo
+if ! command -v sudo &>/dev/null; then
+    echo "🔍 未检测到 sudo，正在安装 sudo..."
 
-curl -sSL https://raw.githubusercontent.com/<你的用户名>/fix-dns/main/bwhDNS.sh -o /tmp/bwhDNS.sh
+    if command -v apt &>/dev/null; then
+        apt update && apt install -y sudo
+    elif command -v yum &>/dev/null; then
+        yum install -y sudo
+    elif command -v dnf &>/dev/null; then
+        dnf install -y sudo
+    elif command -v pacman &>/dev/null; then
+        pacman -Sy --noconfirm sudo
+    else
+        echo "❌ 无法自动安装 sudo，请手动安装。"
+        exit 1
+    fi
+fi
+
+echo "📥 正在下载 bwhDNS.sh 主脚本..."
+curl -sSL https://raw.githubusercontent.com/vps8899/bwhDNS/main/bwhDNS.sh -o /tmp/bwhDNS.sh
 chmod +x /tmp/bwhDNS.sh
 
-echo "🚀 执行中：bwhDNS.sh"
+echo "🚀 开始执行 DNS 固定脚本..."
 sudo /tmp/bwhDNS.sh
-
